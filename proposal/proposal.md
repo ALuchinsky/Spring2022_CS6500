@@ -25,6 +25,8 @@ It should also be noted that in the beginning we are going to analyze some small
 
 ## 4. Reference
 
-R Ivanov and L Raae, “INSPIRE: A new scientific information system for HEP”, J. Phys.: Conf. Ser. (2010) 219 082010
-Simeon Warner, “Open Archives Initiative protocol development and implementation at arXiv”, arXiv:cs/0101027
-Waleed Ammar et al. “Construction of the Literature Graph in Semantic Scholar”, arXiv:1805.02262 [cs.CL]
+* R Ivanov and L Raae, “INSPIRE: A new scientific information system for HEP”, J. Phys.: Conf. Ser. (2010) 219 082010
+
+* Simeon Warner, “Open Archives Initiative protocol development and implementation at arXiv”, arXiv:cs/0101027
+
+* Waleed Ammar et al. “Construction of the Literature Graph in Semantic Scholar”, arXiv:1805.02262 [cs.CL]
