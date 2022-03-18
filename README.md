@@ -1,4 +1,4 @@
-# 2022_SP_6500_FP_Gu_Luchinsky_Mitchell
+    # 2022_SP_6500_FP_Gu_Luchinsky_Mitchell
 
 Final project of CS6500 course
 
@@ -60,14 +60,67 @@ This file can be analyzed by the script `scripts/read_papers.scala`:
 
 This scripts reads all the records, extracts titles and abstract strings for each paper, splits them into words and creates flat arrays of the results. To see the actual output it is required to run the following commands in `spark-shell`:
 
-    scala> kws_tits.collect()
-    res0: Array[String] = Array(Charmonia, production, in, $W, \to, (c\bar, c), D_s^{(*)}$, decays, Charmonia, production, in, W, ?, (cc?)Ds(?), decays, Exclusive, decays, of, the, doubly, heavy, baryon, $\Xi_{bc}$, Exclusive, Decays, of, the, Doubly, Heavy, Baryon, $\Xi_{bc}$, Doubly, heavy, baryons, from, the, theoretical, point, of, view, Weak, decays, of, doubly, heavy, baryons:, Decays, to, a, system, of, $\pi$, mesons, $B_c$, excitations, at, LHC:, first, observations, and, further, research, prospects, Excited, $\rho$, mesons, in, $B_{c}\to\psi^{(')}KK_{S}$, decays, Excited, $\rho$, mesons, in, $B_{c}\to\psi^{(')}KK_{S}$, decays, Doubly, heavy, baryons, at, the, LHC, Doubly, heavy, baryons, at, LHC, Charmonia, Production, in, $W\to, (c\bar{c}), D_{s}^{(*)}$,...
+    scala> kws_tits.show()
+    +---------------+-----+
+    |              K|count|
+    +---------------+-----+
+    |$\chi_c$-mesons|    1|
+    |         chi/b]|    1|
+    |     conversion|    1|
+    |          $W\to|    1|
+    |    \rightarrow|    1|
+    |        PHOTON]|    1|
+    |            $Z$|    1|
+    |     Light-Cone|    1|
+    |         [$B_c$|    1|
+    |       Composed|    1|
+    |          gluon|    1|
+    |           Pair|    1|
+    |              K|    1|
+    |      [Multiple|    1|
+    |  $\rightarrow$|    1|
+    |         mu-).]|    1|
+    |          sigma|    1|
+    |         jets"]|    1|
+    |     tetraquark|    1|
+    |          decay|    1|
+    +---------------+-----+
+    only showing top 20 rows
 
-    scala> res0.length
-    res1: Int = 1155
+as you can see, the most rare words in this table seem to be connected to physics, so they can be used as keywords. Here is how to calculate the total number of unique title keywords
 
-    scala> kws_abs.collect()
-    res2: Array[String] = Array([In, this, paper,, production, of, charmonium, state, ?, in, exclusive, W, ??Ds(?), decays, is, analyzed, in, the, framework, of, both, leading, order, Non-relativistic, Quantum, Chromodynamics, (NRQCD), and, light-cone, (LC), expansion, models., Analytical, and, numerical, predictions, for, the, branching, fractions, of, these, decays, in, both, the, approaches, are, given., The, typical, value, of, the, branching, fractions, is, ?10?11, and, it, turns, out, that, the, LC, results, are, significantly, larger, than, NRQCD, ones, (approximately, two, or, four, times, increase, depending, on, the, quantum, numbers, of, the, final, particles),, so, the, effect, of, internal, quark, motion, should, be, taken, into, account., Some, roug...
+    scala> kws_tits.count()
+    res3: Long = 366
 
-    scala> res2.length
-    res4: Int = 6906
+The same analysis can be done with generated from abstracts keywords:
+
+    scala> kws_abs.show()
+    +--------------------+-----+
+    |                   K|count|
+    +--------------------+-----+
+    |               Total|    1|
+    |            Assuming|    1|
+    |        ?bc+??cc++R,|    1|
+    |     consideration.]|    1|
+    |                  pi|    1|
+    |         scattering)|    1|
+    |                lies|    1|
+    |      pseudorapidity|    1|
+    |                  n?|    1|
+    |                 e^+|    1|
+    |$\Xi_{bc}\to\Xi_{...|    1|
+    |             explain|    1|
+    |               (DPS)|    1|
+    |           \Upsilon,|    1|
+    |           Bc->Bs*+n|    1|
+    |          $\psi(2S)$|    1|
+    |         $\chi_{c1}$|    1|
+    |       interactions.|    1|
+    |                  3P|    1|
+    |                  By|    1|
+    +--------------------+-----+
+    only showing top 20 rows
+    scala> kws_abs.count()
+    res0: Long = 1463
+
+now the keywords are not so physical, but we can try to correct it by excluding some popular english words.
