@@ -27,3 +27,5 @@ val kws_abs = abstracts.
     select( explode(col("value")).as("K")).     // wide to long
     groupBy("K").count().sort("count")          // count and sort
 
+val authors = paps.select("paper.metadata.authors.full_name")
+val all_authors = authors.select( explode(col("full_name"))).distinct()

@@ -124,3 +124,63 @@ The same analysis can be done with generated from abstracts keywords:
     res0: Long = 1463
 
 now the keywords are not so physical, but we can try to correct it by excluding some popular english words.
+
+Table with list of authors for each paper is also created, as well as full list of authors:
+
+        scala> authors.show()
+    +--------------------+
+    |           full_name|
+    +--------------------+
+    |[Luchinsky, A.V.,...|
+    |[Luchinsky, A.V.,...|
+    |[Berezhnoy, A.V.,...|
+    |[Gerasimov, A.S.,...|
+    |[Berezhnoy, A.V.,...|
+    |   [Luchinsky, A.V.]|
+    |[Berezhnoy, A.V.,...|
+    |   [Luchinsky, A.V.]|
+    |[Likhoded, A.K., ...|
+    |[Likhoded, A.K., ...|
+    |   [Luchinsky, A.V.]|
+    |[Likhoded, A.K., ...|
+    |   [Luchinsky, A.V.]|
+    |[Belyaev, I., Ber...|
+    |   [Luchinsky, A.V.]|
+    |[Likhoded, A.K., ...|
+    |[Likhoded, A.K., ...|
+    |[Likhoded, A.K., ...|
+    |   [Luchinsky, A.V.]|
+    |[Berezhnoy, A.V.,...|
+    +--------------------+
+    only showing top 20 rows
+    scala> all_authors.show()
+    +--------------------+
+    |                 col|
+    +--------------------+
+    |      Vasiliev, A.N.|
+    |       Kharlov, V.Y.|
+    |Bystritsky, Viach...|
+    |       Mesyats, G.A.|
+    |            Gula, A.|
+    |      Stolupin, V.M.|
+    |  Slabospitsky, S.R.|
+    |       Ukhanov, M.N.|
+    |     Gerasimov, A.S.|
+    |       Neganov, A.B.|
+    |Bystritskii, Vita...|
+    |   Goncharenko, Y.M.|
+    |      Kachanov, V.A.|
+    |       Borisov, N.S.|
+    |     Poslavsky, S.V.|
+    |      Markhrin, V.I.|
+    |     Kolomiets, V.G.|
+    |       Semenov, P.A.|
+    |   Kormilitsin, V.A.|
+    |     Meschanin, A.P.|
+    +--------------------+
+    only showing top 20 rows
+
+Total number of authors is
+
+    scala> all_authors.count()
+    res15: Long = 84
