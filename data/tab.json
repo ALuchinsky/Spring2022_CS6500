@@ -1,0 +1,6 @@
+[
+    {"x":1, "F":{"y":2, "z":0}, "str":"This is a string"},
+    {"x":2, "F":{"y":4, "z":1}, "str":"This the other string"},
+    {"x":3, "F":{"y":9, "z":2}, "str":"one"},
+    {"x":0, "F":{"y":2, "z":3}, "str":"two"}
+]
