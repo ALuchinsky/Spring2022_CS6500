@@ -58,104 +58,113 @@ This file can be analyzed by the script `scripts/read_papers.scala`:
     /opt/spark/bin/spark-shell
     scala> :load scripts/read_papers.scala
 
-This scripts reads all the records, extracts titles and abstract strings for each paper, splits them into words and creates flat arrays of the results. To see the actual output it is required to run the following commands in `spark-shell`:
+This scripts reads all the records, extracts to table `paps_short` only the information that could be useful (title, abstract, creation date, number of pages, assigned by journals keywords, references and list of authors). Some tables with keywords generated from titles and abstracts (actually, simply a list of distinct words from these sources with number of counts) and titles are also created..
 
-    scala> kws_tits.show()
+For example, this is how you can look on the list of keywords generated from titles
+
+    scala> kws_title.show
     +---------------+-----+
     |              K|count|
     +---------------+-----+
-    |$\chi_c$-mesons|    1|
-    |         chi/b]|    1|
-    |     conversion|    1|
+    |        process|    1|
     |          $W\to|    1|
-    |    \rightarrow|    1|
-    |        PHOTON]|    1|
+    |$\chi_c$-mesons|    1|
+    |       Composed|    1|
+    |         [$B_c$|    1|
+    |         chi/b]|    1|
     |            $Z$|    1|
     |     Light-Cone|    1|
-    |         [$B_c$|    1|
-    |       Composed|    1|
-    |          gluon|    1|
-    |           Pair|    1|
-    |              K|    1|
-    |      [Multiple|    1|
-    |  $\rightarrow$|    1|
-    |         mu-).]|    1|
+    |    \rightarrow|    1|
+    |        PHOTON]|    1|
     |          sigma|    1|
+    |              K|    1|
     |         jets"]|    1|
+    |           Pair|    1|
+    |  $\rightarrow$|    1|
     |     tetraquark|    1|
+    |      [Multiple|    1|
     |          decay|    1|
+    |          gluon|    1|
+    |         mu-).]|    1|
     +---------------+-----+
     only showing top 20 rows
 
-as you can see, the most rare words in this table seem to be connected to physics, so they can be used as keywords. Here is how to calculate the total number of unique title keywords
+As you can see, almost all of them are related to physics. In total there are 366 such words:
 
-    scala> kws_tits.count()
+    scala> kws_title.count
     res3: Long = 366
 
-The same analysis can be done with generated from abstracts keywords:
+Using the same approach we can list and count number of words from abstracts
 
-    scala> kws_abs.show()
+    scala> kws_abstracts.show
     +--------------------+-----+
     |                   K|count|
     +--------------------+-----+
-    |               Total|    1|
-    |            Assuming|    1|
-    |        ?bc+??cc++R,|    1|
-    |     consideration.]|    1|
-    |                  pi|    1|
-    |         scattering)|    1|
-    |                lies|    1|
+    |                  bc|    1|
+    |        $\eta_{c,b}$|    1|
+    |                   ;|    1|
     |      pseudorapidity|    1|
+    |       Specifically,|    1|
     |                  n?|    1|
-    |                 e^+|    1|
     |$\Xi_{bc}\to\Xi_{...|    1|
-    |             explain|    1|
-    |               (DPS)|    1|
-    |           \Upsilon,|    1|
     |           Bc->Bs*+n|    1|
-    |          $\psi(2S)$|    1|
-    |         $\chi_{c1}$|    1|
-    |       interactions.|    1|
-    |                  3P|    1|
     |                  By|    1|
+    |              plane,|    1|
+    |               (DPS)|    1|
+    |     consideration.]|    1|
+    |           \Upsilon,|    1|
+    |       interactions.|    1|
+    |         scattering)|    1|
+    |         $\chi_{c1}$|    1|
+    |                  3P|    1|
+    |             explain|    1|
+    |                lies|    1|
+    |          $\psi(2S)$|    1|
     +--------------------+-----+
     only showing top 20 rows
-    scala> kws_abs.count()
-    res0: Long = 1463
 
-now the keywords are not so physical, but we can try to correct it by excluding some popular english words.
+    scala> kws_abstracts.count
+    res5: Long = 1463
 
-Table with list of authors for each paper is also created, as well as full list of authors:
+The total number of words is larger and they seem to be less "physical". It could be possible, however, to reduce this list by removing some popular english words.
 
-        scala> authors.show()
+It could be also useful to inspect the keywords assigned by the professionals (aouthors, INSPIRES team, etc.):
+
+    scala> kws_assigned.show
     +--------------------+
-    |           full_name|
+    |               value|
     +--------------------+
-    |[Luchinsky, A.V.,...|
-    |[Luchinsky, A.V.,...|
-    |[Berezhnoy, A.V.,...|
-    |[Gerasimov, A.S.,...|
-    |[Berezhnoy, A.V.,...|
-    |   [Luchinsky, A.V.]|
-    |[Berezhnoy, A.V.,...|
-    |   [Luchinsky, A.V.]|
-    |[Likhoded, A.K., ...|
-    |[Likhoded, A.K., ...|
-    |   [Luchinsky, A.V.]|
-    |[Likhoded, A.K., ...|
-    |   [Luchinsky, A.V.]|
-    |[Belyaev, I., Ber...|
-    |   [Luchinsky, A.V.]|
-    |[Likhoded, A.K., ...|
-    |[Likhoded, A.K., ...|
-    |[Likhoded, A.K., ...|
-    |   [Luchinsky, A.V.]|
-    |[Berezhnoy, A.V.,...|
+    |baryon: semilepto...|
+    |     p p: scattering|
+    |quarkonium: trans...|
+    |chi/c1(3510): had...|
+    |gluon gluon: inte...|
+    |        scalar meson|
+    |muon+ nucleus: co...|
+    |electron positron...|
+    |               decay|
+    |          tetraquark|
+    |W --> charm anti-...|
+    | transverse momentum|
+    |differential cros...|
+    |eta/c(2980): wave...|
+    |       wave function|
+    |magnetic field: p...|
+    |             lithium|
+    |charmonium produc...|
+    |             scaling|
+    | B/c: hadronic decay|
     +--------------------+
     only showing top 20 rows
-    scala> all_authors.show()
+
+    scala> kws_assigned.count
+    res7: Long = 481
+
+The full list of authors is available in this page:
+
+    scala> all_authors.show
     +--------------------+
-    |                 col|
+    |           full_name|
     +--------------------+
     |      Vasiliev, A.N.|
     |       Kharlov, V.Y.|
@@ -180,7 +189,5 @@ Table with list of authors for each paper is also created, as well as full list 
     +--------------------+
     only showing top 20 rows
 
-Total number of authors is
-
-    scala> all_authors.count()
-    res15: Long = 84
+    scala> all_authors.count
+    res9: Long = 84

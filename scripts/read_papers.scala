@@ -7,25 +7,28 @@ val papers = spark.read.option("multiLine", true).option("mode", "PERMISSIVE").j
 // extracting papers list
 val paps = papers.select(explode(col("hits.hits")).as("paper"))
 
-// extracting titles
-val titles = paps.select(explode(col("paper.metadata.titles").as("title"))).select("col.title")
-// flat list of all the words from titles
-//val kws_tits = titles.map(s => s(0).toString().split(" ")).flatMap(_.toList)
-val kws_tits = titles.
-    select("title").                        // extract title
-    map(s => s.toString().split(" ")).      // split to words
-    select(explode(col("value")).as("K")).  // wide to long
-    groupBy("K").count().sort("count")      // count and sort
+val paps_short = paps.select(
+    col("paper.metadata.titles"), 
+    col("paper.metadata.abstracts"), col("paper.created"), col("paper.metadata.number_of_pages"), 
+    col("paper.metadata.keywords"), col("paper.metadata.references"),
+    col("paper.metadata.authors.full_name").as("authors")
+    )
 
-// extracting abstracts
-val abstracts = paps.select( explode( col("paper.metadata.abstracts").as("abs"))).select("col.value")
-// flat list af all the words from abstracts
-//val kws_abs = abstracts.map(s => s.toString().split(" ")).flatMap(_.toList)
-val kws_abs = abstracts.
-    select("value").                            // extract abstract
-    map(s => s.toString().split(" ")).          // split to words
-    select( explode(col("value")).as("K")).     // wide to long
-    groupBy("K").count().sort("count")          // count and sort
+val kws_assigned = paps_short.select(explode(col("keywords"))).select("col.value").distinct()
 
-val authors = paps.select("paper.metadata.authors.full_name")
-val all_authors = authors.select( explode(col("full_name"))).distinct()
+var kws_title = paps_short.
+    select(explode(col("titles"))).select("col.title").     // extract title
+    map(T => T.toString().split(" ")).                      // split to words
+    select(explode(col("value")).as("K")).                  // wide to long
+    groupBy("K").count().sort("count")                      // count and sort
+
+ val kws_abstracts = paps_short.
+    select(explode(col("abstracts"))).select("col.value").  // extract title
+    map(T => T.toString().split(" ")).                      // split to words
+    select(explode(col("value")).as("K")).                  // wide to long
+    groupBy("K").count().sort("count")                      // count and sort
+
+val all_authors = paps_short.
+    select(explode(col("authors")).as("full_name")).distinct()
+
+val total =  papers.select("hits.total").collect()(0)(0).toString.toInt
