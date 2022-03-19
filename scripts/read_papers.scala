@@ -15,7 +15,7 @@ val paps = papers.select(explode(col("hits.hits")).as("paper"))
 val paps_short = paps.select(
     col("paper.metadata.titles"), 
     col("paper.metadata.abstracts"), col("paper.created"), col("paper.metadata.number_of_pages"), 
-    col("paper.metadata.keywords"), col("paper.metadata.references"),
+    col("paper.metadata.keywords"), sime(col("paper.metadata.references")).as("num_refs"),
     col("paper.metadata.authors.full_name").as("authors")
     )
 

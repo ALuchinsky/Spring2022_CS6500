@@ -58,7 +58,32 @@ This file can be analyzed by the script `scripts/read_papers.scala`:
     /opt/spark/bin/spark-shell
     scala> :load scripts/read_papers.scala
 
-This scripts reads all the records, extracts to table `paps_short` only the information that could be useful (title, abstract, creation date, number of pages, assigned by journals keywords, references and list of authors). Some tables with keywords generated from titles and abstracts (actually, simply a list of distinct words from these sources with number of counts) and titles are also created..
+This scripts reads all the records, extracts to table `paps_short` only the information that could be useful (title, abstract, creation date, number of pages, assigned by journals keywords, number of references and list of authors). The schema of this short table is
+
+    scala> paps_short.printSchema
+    root
+    |-- titles: array (nullable = true)
+    |    |-- element: struct (containsNull = true)
+    |    |    |-- source: string (nullable = true)
+    |    |    |-- title: string (nullable = true)
+    |-- abstracts: array (nullable = true)
+    |    |-- element: struct (containsNull = true)
+    |    |    |-- abstract_source_suggest: struct (nullable = true)
+    |    |    |    |-- input: string (nullable = true)
+    |    |    |-- source: string (nullable = true)
+    |    |    |-- value: string (nullable = true)
+    |-- created: string (nullable = true)
+    |-- number_of_pages: long (nullable = true)
+    |-- keywords: array (nullable = true)
+    |    |-- element: struct (containsNull = true)
+    |    |    |-- schema: string (nullable = true)
+    |    |    |-- source: string (nullable = true)
+    |    |    |-- value: string (nullable = true)
+    |-- num_refs: integer (nullable = false)
+    |-- authors: array (nullable = true)
+    |    |-- element: string (containsNull = true)
+
+There are also some tables with keywords generated from titles and abstracts (actually, simply a list of distinct words from these sources with number of counts) and titles.
 
 For example, this is how you can look on the list of keywords generated from titles
 
