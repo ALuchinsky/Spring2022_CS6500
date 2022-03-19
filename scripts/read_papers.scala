@@ -14,7 +14,9 @@ val paps_short = paps.select(
     col("paper.metadata.authors.full_name").as("authors")
     )
 
-val kws_assigned = paps_short.select(explode(col("keywords"))).select("col.value").distinct()
+val kws_assigned = paps_short.select(explode(col("keywords"))).
+    select("col.value").groupBy("value").count().
+    sort(desc("count"))
 
 var kws_title = paps_short.
     select(explode(col("titles"))).select("col.title").     // extract title
@@ -29,6 +31,8 @@ var kws_title = paps_short.
     groupBy("K").count().sort("count")                      // count and sort
 
 val all_authors = paps_short.
-    select(explode(col("authors")).as("full_name")).distinct()
+    select(explode(col("authors")).as("full_name")).
+    groupBy("full_name").count().
+    sort(desc("count"))
 
 val total =  papers.select("hits.total").collect()(0)(0).toString.toInt

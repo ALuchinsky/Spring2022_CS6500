@@ -128,65 +128,65 @@ Using the same approach we can list and count number of words from abstracts
 
 The total number of words is larger and they seem to be less "physical". It could be possible, however, to reduce this list by removing some popular english words.
 
-It could be also useful to inspect the keywords assigned by the professionals (aouthors, INSPIRES team, etc.):
+It could be also useful to inspect the keywords assigned by the professionals (authors, INSPIRES team, etc.):
 
     scala> kws_assigned.show
-    +--------------------+
-    |               value|
-    +--------------------+
-    |baryon: semilepto...|
-    |     p p: scattering|
-    |quarkonium: trans...|
-    |chi/c1(3510): had...|
-    |gluon gluon: inte...|
-    |        scalar meson|
-    |muon+ nucleus: co...|
-    |electron positron...|
-    |               decay|
-    |          tetraquark|
-    |W --> charm anti-...|
-    | transverse momentum|
-    |differential cros...|
-    |eta/c(2980): wave...|
-    |       wave function|
-    |magnetic field: p...|
-    |             lithium|
-    |charmonium produc...|
-    |             scaling|
-    | B/c: hadronic decay|
-    +--------------------+
+    +--------------------+-----+
+    |               value|count|
+    +--------------------+-----+
+    |numerical calcula...|   31|
+    |       CERN LHC Coll|   21|
+    |quantum chromodyn...|   17|
+    |               LHC-B|   14|
+    |            14.40.Pq|   13|
+    |          charmonium|   12|
+    |   quarkonium: heavy|   10|
+    |electron positron...|   10|
+    |            12.38.Bx|   10|
+    |            13.25.Gv|   10|
+    |            13.66.Bc|   10|
+    |J/psi(3100): pair...|    8|
+    |          light cone|    7|
+    |     branching ratio|    7|
+    |      color: singlet|    7|
+    |        color: octet|    7|
+    |            12.38.-t|    7|
+    |channel cross sec...|    6|
+    |quarkonium: pair ...|    6|
+    |transverse moment...|    6|
+    +--------------------+-----+
     only showing top 20 rows
 
     scala> kws_assigned.count
     res7: Long = 481
 
-The full list of authors is available in this page:
+The full list of authors is available in this table:
 
     scala> all_authors.show
-    +--------------------+
-    |           full_name|
-    +--------------------+
-    |      Vasiliev, A.N.|
-    |       Kharlov, V.Y.|
-    |Bystritsky, Viach...|
-    |       Mesyats, G.A.|
-    |            Gula, A.|
-    |      Stolupin, V.M.|
-    |  Slabospitsky, S.R.|
-    |       Ukhanov, M.N.|
-    |     Gerasimov, A.S.|
-    |       Neganov, A.B.|
-    |Bystritskii, Vita...|
-    |   Goncharenko, Y.M.|
-    |      Kachanov, V.A.|
-    |       Borisov, N.S.|
-    |     Poslavsky, S.V.|
-    |      Markhrin, V.I.|
-    |     Kolomiets, V.G.|
-    |       Semenov, P.A.|
-    |   Kormilitsin, V.A.|
-    |     Meschanin, A.P.|
-    +--------------------+
+    +------------------+-----+
+    |         full_name|count|
+    +------------------+-----+
+    |   Luchinsky, A.V.|   73|
+    |    Likhoded, A.K.|   49|
+    |   Poslavsky, S.V.|   14|
+    |     Braguta, V.V.|   13|
+    |   Berezhnoy, A.V.|   12|
+    |   Novoselov, A.A.|    8|
+    |   Gershtein, S.S.|    3|
+    |    Filipowicz, M.|    2|
+    |    Bulgakov, T.L.|    2|
+    |       Wozniak, J.|    2|
+    |   Grebenyuk, V.M.|    2|
+    |  Parzhitski, S.S.|    2|
+    |     Donskov, S.V.|    2|
+    |     Sorokin, S.A.|    2|
+    |  Chaikovsky, S.A.|    2|
+    |Sinebryukhov, V.A.|    2|
+    |  Samoylenko, V.D.|    2|
+    |Sinebryukhov, A.A.|    2|
+    |     Mesyats, G.A.|    2|
+    |    Ratakhin, N.A.|    2|
+    +------------------+-----+
     only showing top 20 rows
 
     scala> all_authors.count
