@@ -63,70 +63,71 @@ This scripts reads all the records, extracts to table `paps_short` only the info
 For example, this is how you can look on the list of keywords generated from titles
 
     scala> kws_title.show
-    +---------------+-----+
-    |              K|count|
-    +---------------+-----+
-    |        process|    1|
-    |          $W\to|    1|
-    |$\chi_c$-mesons|    1|
-    |       Composed|    1|
-    |         [$B_c$|    1|
-    |         chi/b]|    1|
-    |            $Z$|    1|
-    |     Light-Cone|    1|
-    |    \rightarrow|    1|
-    |        PHOTON]|    1|
-    |          sigma|    1|
-    |              K|    1|
-    |         jets"]|    1|
-    |           Pair|    1|
-    |  $\rightarrow$|    1|
-    |     tetraquark|    1|
-    |      [Multiple|    1|
-    |          decay|    1|
-    |          gluon|    1|
-    |         mu-).]|    1|
-    +---------------+-----+
+    +-----------+-----+
+    |          K|count|
+    +-----------+-----+
+    |  [Multiple|    1|
+    |     mu-).]|    1|
+    | tetraquark|    1|
+    |      decay|    1|
+    |          K|    1|
+    |         pi|    1|
+    |        e^+|    1|
+    |       Pair|    1|
+    |      sigma|    1|
+    |         e+|    1|
+    |  chi(b0,2)|    1|
+    |     [$B_c$|    1|
+    |      $W\to|    1|
+    |          =|    1|
+    |      gluon|    1|
+    |\rightarrow|    1|
+    | Light-Cone|    1|
+    |      meson|    1|
+    |       [New|    1|
+    | (SPASCHARM|    1|
+    +-----------+-----+
     only showing top 20 rows
 
-As you can see, almost all of them are related to physics. In total there are 366 such words:
+As you can see, almost all of them are related to physics. Note that some most-common english words (list downloaded from https://github.com/pkLazer/password_rank/blob/master/4000-most-common-english-words-csv.csv) were removed. In total there are 308 generated words:
 
     scala> kws_title.count
-    res3: Long = 366
+    res3: Long = 308
 
 Using the same approach we can list and count number of words from abstracts
 
     scala> kws_abstracts.show
-    +--------------------+-----+
-    |                   K|count|
-    +--------------------+-----+
-    |                  bc|    1|
-    |        $\eta_{c,b}$|    1|
-    |                   ;|    1|
-    |      pseudorapidity|    1|
-    |       Specifically,|    1|
-    |                  n?|    1|
-    |$\Xi_{bc}\to\Xi_{...|    1|
-    |           Bc->Bs*+n|    1|
-    |                  By|    1|
-    |              plane,|    1|
-    |               (DPS)|    1|
-    |     consideration.]|    1|
-    |           \Upsilon,|    1|
-    |       interactions.|    1|
-    |         scattering)|    1|
-    |         $\chi_{c1}$|    1|
-    |                  3P|    1|
-    |             explain|    1|
-    |                lies|    1|
-    |          $\psi(2S)$|    1|
-    +--------------------+-----+
+    +-------------------+-----+
+    |                  K|count|
+    +-------------------+-----+
+    |                 3P|    1|
+    |            given.]|    1|
+    |          involving|    1|
+    |                 By|    1|
+    |     pseudorapidity|    1|
+    |    consideration.]|    1|
+    |          kinematic|    1|
+    |              (DPS)|    1|
+    |          Bc->Bs*+n|    1|
+    |          \Upsilon,|    1|
+    |             parton|    1|
+    |             taking|    1|
+    |             Bc->Bs|    1|
+    |$\pi\pi$-scattering|    1|
+    |              Total|    1|
+    |            scaling|    1|
+    |          observed,|    1|
+    |         $B_s^{(*)}|    1|
+    |             bosons|    1|
+    |       ?bc+??cc++R,|    1|
+    +-------------------+-----+
     only showing top 20 rows
 
-    scala> kws_abstracts.count
-    res5: Long = 1463
 
-The total number of words is larger and they seem to be less "physical". It could be possible, however, to reduce this list by removing some popular english words.
+    scala> kws_abstracts.count
+    res1: Long = 1104
+
+The total number of words is larger and they seem to be less "physical", although most common english words are also removed.
 
 It could be also useful to inspect the keywords assigned by the professionals (authors, INSPIRES team, etc.):
 

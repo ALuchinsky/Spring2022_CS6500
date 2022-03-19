@@ -4,6 +4,11 @@ import java.nio.file.Paths;
 val path = Paths.get("data/AL_papers.json").toAbsolutePath().toString();
 val papers = spark.read.option("multiLine", true).option("mode", "PERMISSIVE").json("file://"+path)
 
+ val common_words = spark.read.csv("file://"+
+    Paths.get("data/4000-most-common-english-words-csv.csv").toAbsolutePath().toString()
+ );
+
+
 // extracting papers list
 val paps = papers.select(explode(col("hits.hits")).as("paper"))
 
@@ -22,12 +27,14 @@ var kws_title = paps_short.
     select(explode(col("titles"))).select("col.title").     // extract title
     map(T => T.toString().split(" ")).                      // split to words
     select(explode(col("value")).as("K")).                  // wide to long
+    except(common_words).                                   // not counting common words
     groupBy("K").count().sort("count")                      // count and sort
 
  val kws_abstracts = paps_short.
     select(explode(col("abstracts"))).select("col.value").  // extract title
     map(T => T.toString().split(" ")).                      // split to words
     select(explode(col("value")).as("K")).                  // wide to long
+    except(common_words).                                   // not counting common words
     groupBy("K").count().sort("count")                      // count and sort
 
 val all_authors = paps_short.
