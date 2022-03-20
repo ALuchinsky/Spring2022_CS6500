@@ -1,14 +1,19 @@
 import findspark
 import pyspark
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+
 
 findspark.init()
-
-
 spark = SparkSession.builder.master("local[1]").appName("Spark").getOrCreate()
-df = spark.read.json(
+
+df = spark.read.option("multiLine", True).option("mode", "PERMISSIVE").json(
     "file:///2022_SP_6500_FP_Gu_Luchinsky_Mitchell/data/tab.json")
-ddf = df.toPandas()
-words_ = ddf.query("x>0")["str"].map(lambda s: s.split()).tolist()
-words = [item for sublist in words_ for item in sublist]
-print(words)
+
+df2 = df. \
+    filter(df.x > 0).                               \
+    withColumn("str", split(col("str"), " ")).      \
+    select(explode(col("str")).alias("word")).      \
+    groupBy("word").count()
+
+df2.show()
