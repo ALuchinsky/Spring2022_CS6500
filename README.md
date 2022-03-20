@@ -62,16 +62,8 @@ This scripts reads all the records, extracts to table `paps_short` only the info
 
     scala> paps_short.printSchema
     root
-    |-- titles: array (nullable = true)
-    |    |-- element: struct (containsNull = true)
-    |    |    |-- source: string (nullable = true)
-    |    |    |-- title: string (nullable = true)
-    |-- abstracts: array (nullable = true)
-    |    |-- element: struct (containsNull = true)
-    |    |    |-- abstract_source_suggest: struct (nullable = true)
-    |    |    |    |-- input: string (nullable = true)
-    |    |    |-- source: string (nullable = true)
-    |    |    |-- value: string (nullable = true)
+    |-- title: string (nullable = true)
+    |-- abstract: string (nullable = true)
     |-- created: string (nullable = true)
     |-- number_of_pages: long (nullable = true)
     |-- keywords: array (nullable = true)
@@ -91,33 +83,33 @@ For example, this is how you can look on the list of keywords generated from tit
     +-----------+-----+
     |          K|count|
     +-----------+-----+
-    |  [Multiple|    1|
-    |     mu-).]|    1|
-    | tetraquark|    1|
-    |      decay|    1|
-    |          K|    1|
-    |         pi|    1|
-    |        e^+|    1|
     |       Pair|    1|
     |      sigma|    1|
+    |  [Multiple|    1|
     |         e+|    1|
     |  chi(b0,2)|    1|
+    |          K|    1|
+    | tetraquark|    1|
+    |      decay|    1|
+    | Light-Cone|    1|
+    |      meson|    1|
+    |       [New|    1|
+    | (SPASCHARM|    1|
     |     [$B_c$|    1|
     |      $W\to|    1|
     |          =|    1|
     |      gluon|    1|
     |\rightarrow|    1|
-    | Light-Cone|    1|
-    |      meson|    1|
-    |       [New|    1|
-    | (SPASCHARM|    1|
+    |     chi/b]|    1|
+    |   Composed|    1|
+    |      $B_c$|    1|
     +-----------+-----+
     only showing top 20 rows
 
 As you can see, almost all of them are related to physics. Note that some most-common english words (list downloaded from https://github.com/pkLazer/password_rank/blob/master/4000-most-common-english-words-csv.csv) were removed. In total there are 308 generated words:
 
     scala> kws_title.count
-    res3: Long = 308
+    res2: Long = 254
 
 Using the same approach we can list and count number of words from abstracts
 
