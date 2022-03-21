@@ -25,3 +25,13 @@ paps_short = paps.select(
         col("paper.metadata.references")).alias("num_refs"),
     col("paper.metadata.authors.full_name").alias("authors")
 ).withColumn("title", ascii_udf("title"))
+
+kws_title = paps_short.select("title").                \
+    withColumn("title", split(col("title"), " ")).      \
+    select(explode(col("title")).alias("K")).          \
+    groupBy("K").count().sort(asc("count"))
+
+kws_abstracts = paps_short.select("abstract").                \
+    withColumn("abstract", split(col("abstract"), " ")).      \
+    select(explode(col("abstract")).alias("K")).          \
+    groupBy("K").count().sort(asc("count"))
