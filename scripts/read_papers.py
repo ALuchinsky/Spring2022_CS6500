@@ -14,6 +14,8 @@ findspark.init()
 spark = SparkSession.builder.master("local[1]").appName("Spark").getOrCreate()
 papers = spark.read.option("multiLine", True).option(
     "mode", "PERMISSIVE").option("encoding", "ascii").json("/input/AL_papers.json")
+common_words = spark.read.text(
+    "file:///2022_SP_6500_FP_Gu_Luchinsky_Mitchell/data/4000-most-common-english-words-csv.csv")
 
 paps = papers.select(explode(col("hits.hits")).alias("paper"))
 
@@ -27,7 +29,7 @@ paps_short = paps.select(
 ).withColumn("title", ascii_udf("title"))
 
 kws_title = paps_short.select("title").                \
-    withColumn("title", split(col("title"), " ")).      \
+    withColumn("title", split(col("title"), " ")).     \
     select(explode(col("title")).alias("K")).          \
     groupBy("K").count().sort(asc("count"))
 
