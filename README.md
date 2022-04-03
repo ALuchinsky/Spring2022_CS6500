@@ -1,4 +1,4 @@
-    # 2022_SP_6500_FP_Gu_Luchinsky_Mitchell
+# 2022_SP_6500_FP_Gu_Luchinsky_Mitchell
 
 Final project of CS6500 course
 
